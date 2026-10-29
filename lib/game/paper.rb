@@ -11,4 +11,8 @@ class Paper
   def to_s
     secret_letters.join(' ')
   end
+
+  def reset
+    @secret_letters = []
+  end
 end

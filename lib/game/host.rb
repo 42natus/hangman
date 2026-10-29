@@ -77,4 +77,8 @@ class Host
   def reveal_word
     puts "The word was #{@secret_word.upcase}."
   end
+
+  def reset
+    @blanks = []
+  end
 end

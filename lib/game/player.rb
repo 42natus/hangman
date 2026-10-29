@@ -28,4 +28,10 @@ class Player
     @guesses_left -= 1
     @guess = guess.downcase
   end
+
+  def reset
+    @guess = ''
+    @guesses_left = 8
+    @won = false
+  end
 end
