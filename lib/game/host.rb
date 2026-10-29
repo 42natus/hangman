@@ -51,6 +51,8 @@ class Host
   end
 
   def give_feedback
+    # binding.pry
+
     return unless @secret_word.include? @player.guess
 
     @secret_word.each_char.with_index do |letter, index|
