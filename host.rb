@@ -35,6 +35,8 @@ class Host
   def choose_secret_word
     dictionary = read_dictionary
 
+    word = ''
+
     word = dictionary[rand(dictionary.length)] until word.length.between?(5, 12)
 
     @secret_word = word
@@ -62,6 +64,6 @@ class Host
 
   def show_guesses_remaining
     puts ''
-    puts "#{@player.guesses_left} GUESSES LEFT"
+    puts "#{@player.guesses_left} GUESSES LEFT\n"
   end
 end
