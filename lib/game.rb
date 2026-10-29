@@ -12,6 +12,18 @@ class Game
     @host = Host.new(@paper, @player)
   end
 
+  def announce_result(player)
+    if player.won
+      puts @paper
+
+      puts 'You got it!'
+    else
+      puts 'Not this time, I\'m afraid...'
+
+      @host.reveal_word
+    end
+  end
+
   def play_round
     @host.choose_secret_word
 
@@ -23,11 +35,9 @@ class Game
 
       @host.give_feedback
 
-      @host.show_guesses_remaining
+      @host.show_guesses_remaining unless @player.won
     end
 
-    puts 'you won' if @player.won
-
-    puts 'you lost' if !@player.won
+    announce_result(@player)
   end
 end

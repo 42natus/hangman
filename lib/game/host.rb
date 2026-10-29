@@ -66,6 +66,15 @@ class Host
 
   def show_guesses_remaining
     puts ''
-    puts "#{@player.guesses_left} GUESSES LEFT\n"
+
+    if @player.guesses_left == 1
+      puts "1 GUESS LEFT\n"
+    else
+      puts "#{@player.guesses_left} GUESSES LEFT\n"
+    end
+  end
+
+  def reveal_word
+    puts "The word was #{@secret_word.upcase}."
   end
 end
