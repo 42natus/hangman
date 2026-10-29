@@ -3,35 +3,42 @@
 # This represents the human player. They try to guess the letters in the
 # host's secret word.
 class Player
-  attr_reader :guess, :guesses_left
-  attr_accessor :won
+  attr_reader :guess, :guessed
+  attr_accessor :won, :misses_left, :correct_guess
 
   def initialize
-    @guess = ''
-    @guesses_left = 8
     @won = false
+    @guess = ''
+    @guessed = []
+    @misses_left = 8
+    @correct_guess = true
   end
 
   def valid?(guess)
-    guess.length == 1 && guess.between?('A', 'z')
+    guess.length == 1 && guess.between?('A', 'z') && 
+    !guessed.include?(guess)
   end
 
   def make_guess
-    print 'Guess a letter in the word: '
-    guess = gets.chomp
+    print "Guess a letter in the word: "
+    input = gets.chomp.downcase
 
-    until valid?(guess)
-      print "You can only guess a single letter (A-Z or a-z).\nTry again: "
-      guess = gets.chomp
+    until valid?(input)
+      print "You can only guess a single letter (A-Z or a-z) that you haven't \
+already guessed.\nTry again: "
+      input = gets.chomp.downcase
     end
 
-    @guesses_left -= 1
-    @guess = guess.downcase
+    @guessed << input
+
+    @guess = input
   end
 
   def reset
-    @guess = ''
-    @guesses_left = 8
     @won = false
+    @guess = ''
+    @guessed = []
+    @misses_left = 8
+    @correct_guess = true
   end
 end

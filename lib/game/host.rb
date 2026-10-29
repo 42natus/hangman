@@ -50,27 +50,37 @@ class Host
     @blanks.join.eql? @secret_word
   end
 
-  def give_feedback
-    # binding.pry
-
-    return unless @secret_word.include? @player.guess
-
+  def correct
     @secret_word.each_char.with_index do |letter, index|
       @blanks[index] = letter if letter.eql? @player.guess
     end
+
+    @player.correct_guess = true
 
     update_paper
 
     @player.won = true if word_guessed?
   end
 
+  def incorrect
+    @player.correct_guess = false
+
+    @player.misses_left -= 1
+  end
+  
+  def give_feedback
+    @secret_word.include?(@player.guess) ? correct : incorrect
+  end
+
   def show_guesses_remaining
     puts ''
 
-    if @player.guesses_left == 1
-      puts "1 GUESS LEFT\n"
+    if @player.misses_left == 1
+      puts "1 MISS LEFT\n"
+    elsif @player.misses_left.negative?
+      puts "NO MISSES LEFT"
     else
-      puts "#{@player.guesses_left} GUESSES LEFT\n"
+      puts "#{@player.misses_left} MISSES LEFT\n"
     end
   end
 

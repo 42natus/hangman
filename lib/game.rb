@@ -28,7 +28,7 @@ class Game
   def play_round
     @host.choose_secret_word
 
-    until @player.guesses_left.zero? || @player.won
+    until @player.misses_left.negative? || @player.won
 
       puts @paper
 
@@ -36,7 +36,7 @@ class Game
 
       @host.give_feedback
 
-      @host.show_guesses_remaining unless @player.won
+      @host.show_guesses_remaining unless @player.correct_guess || @player.won
     end
 
     announce_result(@player)
