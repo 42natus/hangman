@@ -3,7 +3,8 @@
 # This represents the human player. They try to guess the letters in the
 # host's secret word.
 class Player
-  attr_reader :guess, :guesses_left, :won
+  attr_reader :guess, :guesses_left
+  attr_accessor :won
 
   def initialize
     @guess = ''
