@@ -5,11 +5,14 @@
 # confirm when they've guessed the whole secret word (or do nothing at all when
 # a guess is incorrect).
 class Host
+  attr_reader :player_misses
+
   def initialize(paper, player)
     @paper = paper
     @player = player
     @secret_word = ''
     @blanks = []
+    @player_misses = []
   end
 
   def sanitize(dictionary)
@@ -63,6 +66,8 @@ class Host
   end
 
   def incorrect
+    @player_misses << @player.guess
+
     @player.correct_guess = false
 
     @player.misses_left -= 1
@@ -70,6 +75,10 @@ class Host
   
   def give_feedback
     @secret_word.include?(@player.guess) ? correct : incorrect
+  end
+
+  def show_misses
+    puts "(MISSES: #{@player_misses.join(', ')})\n"
   end
 
   def show_guesses_remaining

@@ -29,8 +29,9 @@ class Game
     @host.choose_secret_word
 
     until @player.misses_left.negative? || @player.won
-
       puts @paper
+
+      @host.show_misses unless @host.player_misses.empty?
 
       @player.make_guess
 
