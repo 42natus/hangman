@@ -7,7 +7,7 @@ require_relative 'game/player'
 
 # This controls gameplay
 class Game
-  attr_accessor :player, :paper, :host, :round, :saved
+  attr_reader :player, :paper, :host, :round, :saved
 
   def initialize(player, paper, host, round, saved)
     @player = player
@@ -17,8 +17,10 @@ class Game
     @saved = saved
   end
 
-  def serialize
-    File.open('saved.yaml', 'w') do |file|
+  def serialize(filename)
+    Dir.mkdir('.saves') unless Dir.exist?('.saves')
+
+    File.open(".saves/#{filename}.yaml", 'w') do |file|
       file.puts YAML.dump(self)
     end
   end
@@ -28,9 +30,12 @@ class Game
 
     @saved = true
 
-    serialize
+    print "\nEnter a name so you can identify and reload it later: "
+    filename = gets.chomp
 
-    puts "\nProgress saved"
+    serialize(filename)
+
+    puts "\nProgress saved to #{filename}"
   end
 
   def announce_result(player)
