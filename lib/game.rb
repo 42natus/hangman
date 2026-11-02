@@ -35,9 +35,9 @@ class Game
     if player.won
       puts @paper
 
-      puts 'You got it!'
+      puts "\nYou got it!"
     else
-      puts 'Not this time, I\'m afraid...'
+      puts "\nNot this time, I'm afraid..."
 
       @host.reveal_word
     end
@@ -51,6 +51,8 @@ class Game
 
       puts "(To save your progress, enter \"save\")\n\n"
 
+      @host.show_guesses_remaining if @player.misses_left < 8
+      
       puts @paper
 
       @host.show_misses unless @host.player_misses.empty?
@@ -64,8 +66,6 @@ class Game
       end
 
       @host.give_feedback
-
-      @host.show_guesses_remaining unless @player.correct_guess || @player.won
     end
 
     announce_result(@player) unless @saved
@@ -74,17 +74,16 @@ class Game
   end
 
   def welcome
-    puts 'Welcome to HANGMAN!'
+    messages = [
+      'Welcome to HANGMAN!', 
+      'I\'m your host, 42natus!',
+      "Let the game begin...\n"
+    ]
 
-    sleep 1
-
-    puts 'I\'m your host, 42natus!'
-
-    sleep 1
-
-    puts "Let the game begin...\n"
-
-    sleep 1
+    messages.each do |message|
+      puts message
+      sleep 1
+    end
   end
 
   def reset_game
@@ -98,9 +97,7 @@ class Game
   def play
     welcome
 
-    quit_game = false
-    
-    until quit_game
+    while true
       puts "\n--- ROUND #{@round} ---"
 
       play_round
@@ -108,11 +105,11 @@ class Game
       break if @saved
 
       puts "\n\nWould you like to play again? (y/n)"
-      answer = gets.chomp
+      answer = gets.chomp.downcase
 
       unless answer.eql? 'y'
         puts "Thanks for playing. Goodbye!"
-        quit_game = true
+        break
       end
 
       reset_game
