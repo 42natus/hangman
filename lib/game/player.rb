@@ -3,8 +3,8 @@
 # This represents the human player. They try to guess the letters in the
 # host's secret word.
 class Player
-  attr_reader :guess, :guessed
-  attr_accessor :won, :misses_left, :correct_guess
+  attr_reader :guess
+  attr_accessor :won, :guessed, :misses_left, :correct_guess
 
   def initialize
     @won = false
@@ -15,7 +15,7 @@ class Player
   end
 
   def valid?(guess)
-    guess.length == 1 && guess.between?('A', 'z') && 
+    guess.eql?('save') || guess.length == 1 && guess.between?('A', 'z') && 
     !guessed.include?(guess)
   end
 
