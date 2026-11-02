@@ -78,18 +78,16 @@ class Host
   end
 
   def show_misses
-    puts "(MISSES: #{@player_misses.join(', ')})\n"
+    puts "(MISSES: #{@player_misses.join(', ')})\n\n"
   end
 
   def show_guesses_remaining
-    puts ''
-
     if @player.misses_left == 1
-      puts "1 MISS LEFT\n"
+      puts "\n1 MISS LEFT\n\n"
     elsif @player.misses_left.negative?
-      puts "NO MISSES LEFT"
+      puts "\nNO MISSES LEFT\n\n"
     else
-      puts "#{@player.misses_left} MISSES LEFT\n"
+      puts "\n#{@player.misses_left} MISSES LEFT\n\n"
     end
   end
 
@@ -99,5 +97,6 @@ class Host
 
   def reset
     @blanks = []
+    @player_misses = []
   end
 end
