@@ -2,20 +2,20 @@
 
 require_relative 'lib/game'
 
-def list_saves
-  saved_games = Dir.children('.saves')
+def saved_games
+  saves = Dir.children('.saves')
 
-  saved_games.map! do |file|
+  saves.map! do |file|
     file.split('.').first
   end
 end
 
-def valid_entry?(answer, total)
+def valid?(answer, total)
   answer.instance_of?(Integer) && answer.between?(1, total)
 end
 
 def choose_save
-  saves = list_saves
+  saves = saved_games
 
   saves.each_with_index do |file, index|
     puts "#{index + 1}. #{file}"
@@ -24,7 +24,7 @@ def choose_save
   print "\nEnter the number of the game you'd like to continue: "
   answer = gets.chomp.to_i
 
-  until valid_entry?(answer, saves.length)
+  until valid?(answer, saves.length)
     puts 'Invalid option! Try again.'
     answer = gets.chomp.to_i
   end
@@ -37,7 +37,7 @@ def new_game
   paper = Paper.new
   host = Host.new(paper, player)
 
-  Game.new(player, paper, host, 1, false)
+  Game.new(player, paper, host)
 end
 
 def pick_game
@@ -47,15 +47,13 @@ def pick_game
   answer = gets.chomp.downcase
 
   if answer.eql?('y')
-    choice = choose_save
+    progress = File.read(".saves/#{choose_save}.yaml")
 
-    yaml = File.read(".saves/#{choice}.yaml")
-
-    game = Game.reload(yaml)
+    game = Game.reload(progress)
   else
     game = new_game
   end
-  
+
   game
 end
 

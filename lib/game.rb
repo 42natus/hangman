@@ -9,7 +9,7 @@ require_relative 'game/player'
 class Game
   attr_reader :player, :paper, :host, :round, :saved
 
-  def initialize(player, paper, host, round, saved)
+  def initialize(player, paper, host, round = 1, saved: false)
     @player = player
     @paper = paper
     @host = host
@@ -26,62 +26,74 @@ class Game
   end
 
   def save
-    @player.guessed.pop
+    player.guessed.pop
 
     @saved = true
+
+    sleep 1
 
     print "\nEnter a name so you can identify and reload it later: "
     filename = gets.chomp
 
     serialize(filename)
 
-    puts "\nProgress saved to #{filename}"
+    puts "\nProgress saved to \"#{filename}\""
   end
 
-  def announce_result(player)
+  def announce_result
     if player.won
-      puts @paper
+      puts paper
 
       puts "\nYou got it!"
     else
       puts "\nNot this time, I'm afraid..."
 
-      @host.reveal_word
+      host.reveal_word
     end
   end
 
-  def play_round
-    if @saved
+  def setup
+    if self.saved
       @saved = false
     else
-      @host.choose_secret_word
+      host.choose_secret_word
     end
+  end
 
-    until @player.misses_left.negative? || @player.won
+  def player_turn
+    host.show_guesses_remaining if player.misses_left < 8
+
+    puts paper
+
+    host.show_misses unless host.player_misses.empty?
+
+    player.make_guess
+
+    save if player.guessed.last.eql?('save')
+  end
+
+  def end_round
+    announce_result unless @saved
+
+    sleep 1
+  end
+
+  def play_round
+    setup
+
+    until player.misses_left.negative? || player.won
       puts "\n#############################################"
 
       puts "(To save your progress, enter \"save\")\n\n"
 
-      @host.show_guesses_remaining if @player.misses_left < 8
-      
-      puts @paper
+      player_turn
 
-      @host.show_misses unless @host.player_misses.empty?
+      break if saved
 
-      @player.make_guess
-
-      if @player.guessed.last.eql?('save')
-        save
-
-        break
-      end
-
-      @host.give_feedback
+      host.give_feedback
     end
 
-    announce_result(@player) unless @saved
-
-    sleep 1
+    end_round
   end
 
   def welcome
@@ -98,11 +110,23 @@ class Game
   end
 
   def reset_game
-    @host.reset
+    host.reset
 
-    @player.reset
+    player.reset
 
-    @paper.reset
+    paper.reset
+  end
+
+  def quit?
+    puts "\n\nWould you like to play again? (y/n)"
+    answer = gets.chomp.downcase
+
+    unless answer.eql? 'y'
+      puts "Thanks for playing. Goodbye!"
+      return true
+    end
+
+    false
   end
 
   def play
@@ -113,15 +137,7 @@ class Game
 
       play_round
 
-      break if @saved
-
-      puts "\n\nWould you like to play again? (y/n)"
-      answer = gets.chomp.downcase
-
-      unless answer.eql? 'y'
-        puts "Thanks for playing. Goodbye!"
-        break
-      end
+      break if self.saved or quit?
 
       reset_game
 
@@ -129,11 +145,12 @@ class Game
     end
   end
 
-  def self.reload(yaml_string)
-    previous = YAML.load(yaml_string, 
+  def self.reload(progress)
+    previous = YAML.load(progress, 
                          permitted_classes: [Game, Host, Player, Paper], 
                          aliases: true)
-    self.new(previous.player, previous.paper, previous.host, previous.round, 
-             previous.saved)
+
+    self.new(previous.player, previous.paper, previous.host, 
+             round = previous.round, saved: previous.saved)
   end
 end
