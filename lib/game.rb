@@ -7,12 +7,14 @@ require_relative 'game/player'
 
 # This controls gameplay
 class Game
-  def initialize
-    @player = Player.new
-    @paper = Paper.new
-    @host = Host.new(@paper, @player)
-    @round = 1
-    @saved = false
+  attr_accessor :player, :paper, :host, :round, :saved
+
+  def initialize(player, paper, host, round, saved)
+    @player = player
+    @paper = paper
+    @host = host
+    @round = round
+    @saved = saved
   end
 
   def serialize
@@ -24,11 +26,11 @@ class Game
   def save
     @player.guessed.pop
 
+    @saved = true
+
     serialize
 
     puts "\nProgress saved"
-
-    @saved = true
   end
 
   def announce_result(player)
@@ -44,7 +46,11 @@ class Game
   end
 
   def play_round
-    @host.choose_secret_word
+    if @saved
+      @saved = false
+    else
+      @host.choose_secret_word
+    end
 
     until @player.misses_left.negative? || @player.won
       puts "\n#############################################"
@@ -116,5 +122,13 @@ class Game
 
       @round = @round.next
     end
+  end
+
+  def self.reload(yaml_string)
+    previous = YAML.load(yaml_string, 
+                         permitted_classes: [Game, Host, Player, Paper], 
+                         aliases: true)
+    self.new(previous.player, previous.paper, previous.host, previous.round, 
+             previous.saved)
   end
 end
