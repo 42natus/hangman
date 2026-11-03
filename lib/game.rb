@@ -96,19 +96,6 @@ class Game
     end_round
   end
 
-  def welcome
-    messages = [
-      'Welcome to HANGMAN!', 
-      'I\'m your host, 42natus!',
-      "Let the game begin...\n"
-    ]
-
-    messages.each do |message|
-      puts message
-      sleep 1
-    end
-  end
-
   def reset_game
     host.reset
 
@@ -130,8 +117,6 @@ class Game
   end
 
   def play
-    welcome
-
     while true
       puts "\n--- ROUND #{@round} ---"
 
