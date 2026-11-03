@@ -22,11 +22,11 @@ class Host
   end
 
   def read_dictionary
-    file = File.open('google-10000-english-no-swears.txt')
+    dictionary = []
 
-    dictionary = file.readlines
-
-    file.close
+    File.open('google-10000-english-no-swears.txt') do |file|
+      dictionary = file.readlines
+    end
 
     sanitize(dictionary)
   end
@@ -44,7 +44,7 @@ class Host
 
     @secret_word = word
 
-    @secret_word.each_char { |letter| @blanks << '_' }
+    @secret_word.each_char { |_letter| @blanks << '_' }
 
     update_paper
   end
@@ -72,7 +72,7 @@ class Host
 
     @player.misses_left -= 1
   end
-  
+
   def give_feedback
     @secret_word.include?(@player.guess) ? correct : incorrect
   end

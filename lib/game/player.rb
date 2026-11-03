@@ -15,12 +15,12 @@ class Player
   end
 
   def valid?(guess)
-    guess.eql?('save') || guess.length == 1 && guess.between?('A', 'z') && 
-    !guessed.include?(guess)
+    guess.eql?('save') || (guess.length == 1 && guess.between?('A', 'z') &&
+      !guessed.include?(guess))
   end
 
   def make_guess
-    print "Guess a letter in the word: "
+    print 'Guess a letter in the word: '
     input = gets.chomp.downcase
 
     until valid?(input)

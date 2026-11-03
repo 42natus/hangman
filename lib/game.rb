@@ -18,7 +18,7 @@ class Game
   end
 
   def serialize(filename)
-    Dir.mkdir('.saves') unless Dir.exist?('.saves')
+    FileUtils.mkdir_p('.saves')
 
     File.open(".saves/#{filename}.yaml", 'w') do |file|
       file.puts YAML.dump(self)
@@ -53,7 +53,7 @@ class Game
   end
 
   def setup
-    if self.saved
+    if saved
       @saved = false
     else
       host.choose_secret_word
@@ -109,7 +109,7 @@ class Game
     answer = gets.chomp.downcase
 
     unless answer.eql? 'y'
-      puts "Thanks for playing. Goodbye!"
+      puts 'Thanks for playing. Goodbye!'
       return true
     end
 
@@ -117,12 +117,12 @@ class Game
   end
 
   def play
-    while true
+    loop do
       puts "\n--- ROUND #{@round} ---"
 
       play_round
 
-      break if self.saved or quit?
+      break if saved || quit?
 
       reset_game
 
@@ -131,11 +131,11 @@ class Game
   end
 
   def self.reload(progress)
-    previous = YAML.load(progress, 
-                         permitted_classes: [Game, Host, Player, Paper], 
-                         aliases: true)
+    previous = YAML.safe_load(progress,
+                              permitted_classes: [Game, Host, Player, Paper],
+                              aliases: true)
 
-    self.new(previous.player, previous.paper, previous.host, 
-             round = previous.round, saved: previous.saved)
+    new(previous.player, previous.paper, previous.host,
+        previous.round, saved: previous.saved)
   end
 end

@@ -54,7 +54,7 @@ def pick_game
 
     progress = File.read(".saves/#{choice}.yaml")
 
-    %x[rm .saves/"#{choice}".yaml]
+    `rm .saves/"#{choice}".yaml`
 
     game = Game.reload(progress)
   else
@@ -70,7 +70,7 @@ end
 
 def welcome
   messages = [
-    '--- Welcome to HANGMAN ---', 
+    '--- Welcome to HANGMAN ---',
     'I\'m your host, 42natus!',
     "Let the game begin...\n"
   ]
