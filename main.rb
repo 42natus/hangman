@@ -50,7 +50,11 @@ def pick_game
   answer = gets.chomp.downcase
 
   if answer.eql?('y')
-    progress = File.read(".saves/#{choose_save}.yaml")
+    choice = choose_save
+
+    progress = File.read(".saves/#{choice}.yaml")
+
+    %x[rm .saves/"#{choice}".yaml]
 
     game = Game.reload(progress)
   else
