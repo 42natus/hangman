@@ -15,16 +15,7 @@ def valid?(answer, total)
   answer.instance_of?(Integer) && answer.between?(1, total)
 end
 
-def choose_save
-  saves = saved_games
-  total = saves.length
-
-  puts "\nPREVIOUS GAMES"
-
-  saves.each_with_index do |file, index|
-    puts "  #{index + 1}. #{file}"
-  end
-
+def choice_from_menu(total)
   print "\nWhich game would you like to continue? (1 to #{total})  "
   answer = gets.chomp.to_i
 
@@ -33,7 +24,21 @@ def choose_save
     answer = gets.chomp.to_i
   end
 
-  saves[answer - 1]
+  answer
+end
+
+def choose_save
+  saves = saved_games
+
+  puts "\nPREVIOUS GAMES"
+
+  saves.each_with_index do |file, index|
+    puts "  #{index + 1}. #{file}"
+  end
+
+  choice = choice_from_menu(saves.length)
+
+  saves[choice - 1]
 end
 
 def new_game
@@ -45,8 +50,6 @@ def new_game
 end
 
 def pick_game
-  game = nil
-
   print "\nWould you like to load a saved game? (y/n)  "
   answer = gets.chomp.downcase
 
@@ -57,12 +60,10 @@ def pick_game
 
     `rm .saves/"#{choice}".yaml`
 
-    game = Game.reload(progress)
-  else
-    game = new_game
+    return Game.reload(progress)
   end
 
-  game
+  new_game
 end
 
 def saved_games?

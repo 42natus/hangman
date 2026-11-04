@@ -61,15 +61,15 @@ class Game
   end
 
   def player_turn
-    host.show_guesses_remaining if player.misses_left < 8
+    @host.show_guesses_remaining if @player.misses_left < 8
 
     puts paper
 
-    host.show_misses unless host.player_misses.empty?
+    @host.show_misses unless @host.player_misses.empty?
 
-    player.make_guess
+    @player.make_guess
 
-    save if player.guessed.last.eql?('save')
+    save if @player.guessed.last.eql?('save')
   end
 
   def end_round
