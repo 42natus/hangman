@@ -28,7 +28,7 @@ class Host
   def read_dictionary
     dictionary = []
 
-    File.open('google-10000-english-no-swears.txt') do |file|
+    File.open('./lib/game/google-10000-english-no-swears.txt') do |file|
       dictionary = file.readlines
     end
 
