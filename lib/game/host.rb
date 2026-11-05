@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'hangable'
+
 # This represents the "executioner" in charge — the computer in this case. It'll
 # choose the secret word and act on the player's guess to update the paper and
 # confirm when they've guessed the whole secret word (or do nothing at all when
 # a guess is incorrect).
 class Host
+  include Hangable
+
   attr_reader :player_misses
 
   def initialize(paper, player)
@@ -81,14 +85,8 @@ class Host
     puts "(MISSES: #{@player_misses.join(', ')})\n\n"
   end
 
-  def show_guesses_remaining
-    if @player.misses_left == 1
-      puts "\n1 MISS LEFT\n\n"
-    elsif @player.misses_left.negative?
-      puts "\nNO MISSES LEFT\n\n"
-    else
-      puts "\n#{@player.misses_left} MISSES LEFT\n\n"
-    end
+  def draw_stick_figure(stage)
+    puts stick_figure(stage.to_s)
   end
 
   def reveal_word

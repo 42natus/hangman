@@ -46,7 +46,7 @@ class Game
 
       puts "\nYou got it!"
     else
-      puts "\nNot this time, I'm afraid..."
+      host.draw_stick_figure(-1)
 
       host.reveal_word
     end
@@ -61,7 +61,7 @@ class Game
   end
 
   def player_turn
-    @host.show_guesses_remaining if @player.misses_left < 8
+    @host.draw_stick_figure(@player.misses_left) if @player.misses_left < 8
 
     puts paper
 
