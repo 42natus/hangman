@@ -16,7 +16,7 @@ class Player
 
   def valid?(guess)
     guess.eql?('save') || (guess.length == 1 && guess.between?('A', 'z') &&
-      !guessed.include?(guess))
+    !guessed.include?(guess))
   end
 
   def make_guess
