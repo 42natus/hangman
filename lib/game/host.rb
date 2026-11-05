@@ -87,6 +87,8 @@ class Host
 
   def draw_stick_figure(stage)
     puts stick_figure(stage.to_s)
+
+    puts ''
   end
 
   def reveal_word
