@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# This represents the human player. They try to guess the letters in the
-# host's secret word.
+# This represents the human player. They try to guess the letters in the host's
+# secret word.
 class Player
   attr_reader :guess
   attr_accessor :won, :guessed, :misses_left, :correct_guess

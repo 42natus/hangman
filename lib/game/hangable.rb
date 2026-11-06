@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# This is module defines the method containing the stick figure drawings
+# This module contains the stick figure drawings at different execution stages.
 module Hangable
   EXECUTION = {
     '7' => "──────────├\n          ❘\n          ❘\n          ❘\n          ❘\n          ❘\n          ❘\n          ❘\n",

@@ -4,8 +4,9 @@ require_relative 'hangable'
 
 # This represents the "executioner" in charge — the computer in this case. It'll
 # choose the secret word and act on the player's guess to update the paper and
-# confirm when they've guessed the whole secret word (or do nothing at all when
-# a guess is incorrect).
+# confirm when they've guessed the whole secret word. Whenever the player makes
+# an incorrect guess, the host adds a line to the stick figure drawing of a man
+# being executed.
 class Host
   include Hangable
 

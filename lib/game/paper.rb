@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# This is the 'paper' that the host will draw on. It's what gets displayed.
+# This is the 'paper' that the host draws on. It's what gets displayed.
 class Paper
   attr_accessor :secret_letters
 
