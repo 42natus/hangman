@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'fileutils'
 require 'yaml'
 require_relative 'game/host'
 require_relative 'game/paper'
